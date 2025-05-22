@@ -1,0 +1,1 @@
+CREATE DATABASE mgv_hub_db;
