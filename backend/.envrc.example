@@ -1,0 +1,2 @@
+export PORT="9090"
+export DNS="postgres://user:password@localhost:5432/yourDb?sslmode=disable"
