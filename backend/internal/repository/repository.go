@@ -1,10 +1,22 @@
 package repository
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+	"time"
+)
 
-type Repositories struct {
+var (
+	ErrNotFound          = errors.New("record not found")
+	QueryTimeoutDuration = time.Second * 5
+)
+
+type Repository struct {
+	Users
 }
 
-func New(db *sql.DB) Repositories {
-	return Repositories{}
+func New(db *sql.DB) Repository {
+	return Repository{
+		Users: NewUserRepo(db),
+	}
 }

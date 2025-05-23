@@ -1,6 +1,11 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 type Role struct {
 	ID        int64     `db:"id" json:"id"`
@@ -20,4 +25,28 @@ type Account struct {
 	CreatedAt              time.Time  `db:"created_at" json:"created_at"`
 	UpdatedAt              time.Time  `db:"updated_at" json:"updated_at"`
 	Role                   *Role      `db:"-" json:"role,omitempty"` // db:"-" prevents sqlx from trying to scan into this field
+}
+
+func (a *Account) PasswordMatches(plainText string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(a.PasswordHash), []byte(plainText))
+	if err != nil {
+		switch {
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
+			return false, nil
+		default:
+			return false, err
+		}
+	}
+	return true, nil
+}
+
+func (a *Account) HashPassword(plainText string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(plainText), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	a.PasswordHash = string(hashedPassword)
+	a.PasswordChangeRequired = false
+
+	return nil
 }
