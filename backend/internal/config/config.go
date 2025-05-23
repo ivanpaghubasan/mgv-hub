@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 )
@@ -19,12 +20,14 @@ type DbConfig struct {
 	MaxIdleItem  string
 }
 
-func InitConfig() Config {
+func LoadConfig() Config {
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", getEnvString("DB_USER", "mgv_user"), getEnvString("DB_PASSWORD", "mgv_password"), getEnvString("DB_HOST", "localhost"), os.Getenv("DB_PORT"), getEnvString("DB_NAME", "mgv_hub_db"), os.Getenv("DB_SSLMODE"))
+
 	return Config{
 		Port:   getEnvString("PORT", "9090"),
 		ApiUrl: getEnvString("API_URL", "localhost:9090"),
 		DB: DbConfig{
-			DSN:          getEnvString("DSN", "postgres://admin:adminpassword@localhost:5432/mgv_hub_db?sslmode=disable"),
+			DSN:          dsn,
 			MaxOpenConns: getEnvInt("DB_MAX_OPEN_CONNS", 30),
 			MaxIdleConns: getEnvInt("DB_MAX_IDLE_CONNS", 30),
 			MaxIdleItem:  getEnvString("DB_NAX_IDLE_TIME", "15m"),
