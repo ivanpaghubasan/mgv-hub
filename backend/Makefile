@@ -1,4 +1,4 @@
-include .envrc
+include .env
 
 DB_USER ?= mgv_user
 DB_NAME ?= mgv_hub_db
