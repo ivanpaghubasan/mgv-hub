@@ -10,7 +10,7 @@ import (
 
 type application struct {
 	config     config.Config
-	repository repository.Repositories
+	repository repository.Repository
 	router     *gin.Engine
 }
 
