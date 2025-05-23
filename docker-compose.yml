@@ -3,15 +3,16 @@ version: '3.9'
 services:
   db:
     image: postgres:16.3
+    restart: always
     container_name: mgv-hub-postgres
     environment:
-      POSTGRES_DB: mgv_hub_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: ${DB_NAME:-mgv_hub_db}
+      POSTGRES_USER: ${DB_USER:-mgv_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-mgv_password}
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
 volumes:
-  db-data:
+  db_data:

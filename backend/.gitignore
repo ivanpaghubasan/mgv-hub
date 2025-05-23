@@ -2,3 +2,5 @@
 .envrc
 
 go.sum
+
+bin/
