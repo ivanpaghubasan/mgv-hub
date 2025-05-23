@@ -2,8 +2,11 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -21,6 +24,10 @@ type DbConfig struct {
 }
 
 func LoadConfig() Config {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", getEnvString("DB_USER", "mgv_user"), getEnvString("DB_PASSWORD", "mgv_password"), getEnvString("DB_HOST", "localhost"), os.Getenv("DB_PORT"), getEnvString("DB_NAME", "mgv_hub_db"), os.Getenv("DB_SSLMODE"))
 
 	return Config{
