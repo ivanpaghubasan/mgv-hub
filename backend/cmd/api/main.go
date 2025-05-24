@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/ivanpaghubasan/mgv-hub-backend/internal/config"
 	"github.com/ivanpaghubasan/mgv-hub-backend/internal/db"
 	"github.com/ivanpaghubasan/mgv-hub-backend/internal/repository"
@@ -11,8 +12,9 @@ import (
 
 func main() {
 	app := application{
-		config: config.LoadConfig(),
-		router: gin.Default(),
+		config:   config.LoadConfig(),
+		router:   gin.Default(),
+		validate: validator.New(),
 	}
 
 	db, err := db.New(app.config.DB)
