@@ -17,6 +17,6 @@ type Repository struct {
 
 func New(db *sql.DB) Repository {
 	return Repository{
-		Users: NewUserRepo(db),
+		Users: NewUsersRepo(db),
 	}
 }
